@@ -48,17 +48,14 @@ If you are scanning for a bluetooth device, there are some settings in bleScane.
 
 In TARGET_DEVICE_NAME, you will need to find the id of your bluetooth device. There are a few signal strength settings, along with the duration in seconds, that it takes to activate the relays. 
 
+The project will then need to be copied to the Pico W in the same structure as the repository is in. 
+
 ### Internet
 
-I don't recommend expsoing this over the internet directly. There is no security at all with the current configuration. In my set up I have this only available on my internal network only. 
+I don't recommend exposing this over the internet directly. There is no security at all with the current configuration. In my set up I have this only available on my internal network only. 
 
 I do have an internet facing device that controls the pico W. I built this using an old Raspberry PI Zero running apache, NOIP and LetsEncrypt. All open source and free services that allows me to have a secure https service with a free ssl certficate. I will expand on this at a later date. 
 
-
-
-
-
-The project will then need to be copied in the same structure as the repository is in. 
 
 
 
