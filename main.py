@@ -3,7 +3,6 @@ from microdotFunctions import runMicrodotServer
 from bleScan import monitor_signal_strength
 import asyncio
 import time
-import ntptime
 
 async def setupStartup():
     print("starting up services")
@@ -13,11 +12,10 @@ async def setupStartup():
     await asyncio.gather(taskWebServer, scanbluetooth)
     #await asyncio.gather(scanbluetooth)
 
+print('starting')
+
 connected = connectToWLAN()
 print ("connected is ", connected)
-
-ntptime.settime()
-print (time.localtime())
 
 if (connected == True):
     asyncio.run(setupStartup())

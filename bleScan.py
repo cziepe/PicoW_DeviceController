@@ -1,12 +1,12 @@
 import aioble
 import time
-import windowfunctions
+import controllerFunctions
 
 async def ScanDevices():
     print('Begining scan')
     async with aioble.scan(duration_ms=0,interval_us=30000, window_us=30000, active=True) as scanner:
             async for result in scanner:
-                if (result.name() == 'LPWBVFQI'):
+                if (result.name() == ''):
                      print(result.rssi)
 
 
@@ -36,7 +36,7 @@ async def monitor_signal_strength():
                     
                     thresholdVal = RSSI_CLOSED_OUTSIDE_THRESHOLD 
 
-                    if rssi >= thresholdVal and windowfunctions.window_state == 'closed':
+                    if rssi >= thresholdVal and controllerFunctions.state == 'closed':
                         devicedetected = True
                         out_of_range_time = None
                         not_detected_time = None
@@ -47,23 +47,23 @@ async def monitor_signal_strength():
                         else:
                             # Check if the duration has passed
                             if (time.time() - start_time) >= DURATION:
-                                if windowfunctions.window_state == 'closed':
+                                if controllerFunctions.state == 'closed':
                                     print(f"Device has maintained the RSSI threshold for {DURATION} seconds.")
-                                    await windowfunctions.runCommand('open', 15000)
+                                    await controllerFunctions.runCommand('open', 15000)
                             
                     else:
                         # Reset the timer if the RSSI goes below the threshold
                         start_time = None
                         not_detected_time = None
                         
-                        if (windowfunctions.window_state == 'open' and rssi <= RSSI_OPENED_THRESHOLD ):
+                        if (controllerFunctions.state == 'open' and rssi <= RSSI_OPENED_THRESHOLD ):
                             if out_of_range_time == None:
                                 out_of_range_time = time.time()
 
                             if (time.time() - out_of_range_time >= DURATION):
                                 print(f'device is out of range threshold for more than {DURATION} seconds')
                                 print('Issuing close command.')
-                                await windowfunctions.runCommand('closeOverrideBeam', 15000)
+                                await controllerFunctions.runCommand('closeOverrideBeam', 15000)
                                 out_of_range_time = None         
 
                  else:
@@ -74,14 +74,14 @@ async def monitor_signal_strength():
                         if not_detected_time is None:
                             not_detected_time = time.time()
                         
-                        if windowfunctions.window_state == 'open':
+                        if controllerFunctions.state == 'open':
                             #print(f"Not found for {time.time() - not_detected_time} seconds")
 
                             if (time.time() - not_detected_time) >= DURATION:
                                 print("device not found for longer than 20 secs")
-                                if windowfunctions.window_state == 'open':
+                                if controllerFunctions.state == 'open':
                                     print(f"Device is out of range for more than {DURATION} seconds. Closing Window.")
-                                    await windowfunctions.runCommand('closeOverrideBeam', 15000)
+                                    await controllerFunctions.runCommand('closeOverrideBeam', 15000)
                                     devicedetected = False
                 
                  #await asyncio.sleep(1)

@@ -41,8 +41,9 @@ async def status(request):
     return 'Status is - ' + controllerFunctions.state
 
 async def runMicrodotServer():
-    print("running microdot server")
     try:
+        print("running microdot server")
         app.run(port=80)
+        print("success")
     except:
         app.shutdown()
